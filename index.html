@@ -219,8 +219,7 @@ const ROLES = Object.keys(DF.role).filter(r => r !== 'None');
 const GROUPS = [
   { title: 'Balance', hint: 'How the parts of the score mix', ctls: [
     { k: 'past', label: 'Past vs potential', fmt: v => `${100 - pct(v)} / ${pct(v)}`, note: 'Left favors people using the farm now. Right favors past giving.' },
-    { k: 'amt', label: 'Giving: amount vs how often', fmt: v => `${pct(v)}% $`, note: 'Right counts dollars more. Left counts number of gifts more.' },
-    { k: 'roleShare', label: 'Farm use: role vs attendance', fmt: v => `${pct(v)}% role`, note: 'Right counts who they are. Left counts how many workshops and events they came to.' } ] },
+    { k: 'amt', label: 'Giving: amount vs how often', fmt: v => `${pct(v)}% $`, note: 'Right counts dollars more. Left counts number of gifts more.' } ] },
   { title: 'Bloomerang import limits', hint: 'What the standard two-template import does with our data', ctls: [
     { k: 'budget', label: 'Record budget (price band)', opts: [0, ...D.bands.map(b => b[0])],
       fmt: v => v ? `${fmtN(v)} · ${D.bands.find(b => b[0] === v)[1]}` : 'No limit',
