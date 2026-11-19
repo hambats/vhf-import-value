@@ -248,7 +248,7 @@ for (const n of [0, 1, 2, 3]) DEF['c_' + n] = DF.complete[n];
 for (const r of ROLES) DEF['r_' + r] = DF.role[r];
 const near = (a, b) => Math.abs(a - b) < 1e-6;
 let W = { ...DEF }, sortKey = 'total', loAll = false;
-try { const s = JSON.parse(localStorage.getItem('vhf-value-w3') || 'null'); if (s) for (const k in DEF) if (k in s) W[k] = s[k]; } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem('vhf-value-w3') || 'null'); if (s) for (const k in DEF) if (k in s && k !== 'roleShare') W[k] = s[k]; } catch (e) {}
 
 const L = (x, cap) => x > 0 ? Math.min(1, Math.log1p(x) / Math.log1p(cap)) : 0;
 function score(r) {
