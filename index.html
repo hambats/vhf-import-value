@@ -103,9 +103,14 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .tile b { font: 500 24px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
 .tile .sub { font-size: 13px; color: var(--muted); }
 .lockwarn { margin: 0; padding: 10px 14px; border: 1px solid var(--warn); border-radius: 6px; color: var(--warn); font-size: 14px; background: var(--surface); }
-.leftout { display: grid; gap: 8px; }
-.leftout h3 { font: 600 15px/1.2 var(--display); margin: 0; }
-.lo-head { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; justify-content: space-between; }
+.leftout { border-top: 1px solid var(--line); padding-top: 14px; }
+.leftout[open] > summary { margin-bottom: 10px; }
+.leftout[open] > .tablebox { margin-bottom: 10px; }
+.lo-head { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; cursor: pointer; list-style: none; }
+.lo-head::-webkit-details-marker { display: none; }
+.lo-head h2::before { content: "▸"; display: inline-block; width: 1.1em; color: var(--accent); transition: transform .15s ease; }
+.leftout[open] .lo-head h2::before { transform: rotate(90deg); }
+.lo-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 table.lo { min-width: 760px; }
 table.lo th, table.lo td { padding: 8px 10px; font-size: 13px; }
 table.lo td.num b { font-weight: 500; }
@@ -133,15 +138,6 @@ table.lo td.none { color: var(--muted); }
         <h2 id="cut-h"></h2>
         <div class="tiles" id="tiles"></div>
         <p class="lockwarn" id="lockwarn" hidden></p>
-        <div class="leftout">
-          <div class="lo-head"><h3>Largest gifts left out</h3><span class="foot" id="lo-sum"></span></div>
-          <div class="tablebox"><table class="lo">
-            <thead><tr><th class="num">#</th><th class="num">Given</th><th class="num">Since 2024</th><th class="num">Gifts</th><th>Gift years</th>
-              <th>Type</th><th>On file</th><th>Import</th><th class="num">Score</th></tr></thead>
-            <tbody id="leftout"></tbody>
-          </table></div>
-          <button type="button" class="reset" id="lo-more"></button>
-        </div>
       </section>
       <div class="bar-head">
         <h2>Import ranking</h2>
@@ -186,6 +182,15 @@ table.lo td.none { color: var(--muted); }
           <li>QuickBooks starts in 2024 on purpose. 2022–23 gifts come from the board's Donor Database ledgers so nothing is counted twice.</li>
         </ul>
       </section>
+      <details class="leftout">
+        <summary class="lo-head"><h2>Largest gifts left out</h2><span class="foot" id="lo-sum"></span></summary>
+        <div class="tablebox"><table class="lo">
+          <thead><tr><th class="num">#</th><th class="num">Given</th><th class="num">Since 2024</th><th class="num">Gifts</th><th>Gift years</th>
+            <th>Type</th><th>On file</th><th>Import</th><th class="num">Score</th></tr></thead>
+          <tbody id="leftout"></tbody>
+        </table></div>
+        <button type="button" class="reset" id="lo-more"></button>
+      </details>
     </div>
 
     <aside class="panel" aria-label="Weights">
@@ -356,7 +361,7 @@ function render() {
   $('lo-sum').textContent = dN ? `${fmtN(dN)} donor records left out gave ${money(dG)} in all. Lowest score kept: ${lim ? B.cutoff.toFixed(1) : '—'}.` : '';
   $('lo-more').hidden = B.dropped.length <= 15;
   $('lo-more').textContent = loAll ? 'Show the top 15' : `Show all ${fmtN(dN)} left-out donor records`;
-  $('leftout').parentElement.hidden = !W.budget;
+  $('leftout').closest('details').hidden = !W.budget;
   S.sort((a, b) => b[sortKey === 'pot' ? 'pot' : sortKey] - a[sortKey === 'pot' ? 'pot' : sortKey]);
   const top = Math.max(...S.map(s => sortKey === 'avg' ? s.avg : s.total), 1e-9);
   $('rows').innerHTML = S.map((s, ix) => {
