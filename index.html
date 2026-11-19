@@ -217,11 +217,11 @@ const pct = v => Math.round(v * 100);
 const YEARS = [['2026', '2026'], ['2025', '2025'], ['2024', '2024'], ['2023', '2023'], ['2022', '2022'], ['older', 'Before 2022'], ['none', 'No date found']];
 const ROLES = Object.keys(DF.role).filter(r => r !== 'None');
 const GROUPS = [
-  { title: 'Balance', hint: 'How the parts of the score mix', open: true, ctls: [
+  { title: 'Balance', hint: 'How the parts of the score mix', ctls: [
     { k: 'past', label: 'Past vs potential', fmt: v => `${100 - pct(v)} / ${pct(v)}`, note: 'Left favors people using the farm now. Right favors past giving.' },
     { k: 'amt', label: 'Giving: amount vs how often', fmt: v => `${pct(v)}% $`, note: 'Right counts dollars more. Left counts number of gifts more.' },
     { k: 'roleShare', label: 'Farm use: role vs attendance', fmt: v => `${pct(v)}% role`, note: 'Right counts who they are. Left counts how many workshops and events they came to.' } ] },
-  { title: 'Bloomerang import limits', hint: 'What the standard two-template import does with our data', open: true, ctls: [
+  { title: 'Bloomerang import limits', hint: 'What the standard two-template import does with our data', ctls: [
     { k: 'budget', label: 'Record budget (price band)', opts: [0, ...D.bands.map(b => b[0])],
       fmt: v => v ? `${fmtN(v)} · ${D.bands.find(b => b[0] === v)[1]}` : 'No limit',
       note: 'Bloomerang prices the CRM by record count. Records are kept best value first; pass-through accounts are always kept because they hold gift history.' },
@@ -230,7 +230,7 @@ const GROUPS = [
     { k: 'lockUsers', label: 'Always keep current farm users', opts: [0, 1], fmt: v => v ? 'Yes' : 'No',
       note: 'Veterans, families, caregivers, volunteers and workshop attendees.' },
     { k: 'noname', label: 'No name: imports as "Friend Unknown"', note: 'Bloomerang fills a blank first name with "Friend" and a blank last name with "Unknown". Proposed weight, not part of the 11/18 agreement.' } ] },
-  { title: 'Freshness', hint: 'Most recent date anywhere on the record. Agreed: 2024 and later get priority.', open: true,
+  { title: 'Freshness', hint: 'Most recent date anywhere on the record. Agreed: 2024 and later get priority.',
     ctls: YEARS.map(([y, l]) => ({ k: 'f_' + y, label: l })) },
   { title: 'Contact completeness', hint: 'Valid email, mailing address and phone',
     ctls: [3, 2, 1, 0].map(n => ({ k: 'c_' + n, label: n ? `${n} of 3` : 'Name only' })) },
